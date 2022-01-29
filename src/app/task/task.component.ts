@@ -42,7 +42,7 @@ export class TaskComponent {
   onArchiveTask = new EventEmitter<Event>();
 
   onPin(id: any): void {
-    this.onPinTask.emit();
+    this.onPinTask.emit(id);
   }
 
   onArchive(id: any): void {
