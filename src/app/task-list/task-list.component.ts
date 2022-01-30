@@ -9,8 +9,7 @@ import { Task } from '../task/task.model';
   <app-task
     *ngFor="let task of tasksInOrder"
     [task]="task"
-    (onArchiveTask)="onArchiveTask.emit($event)"
-    (onPinTask)="onPinTask.emit($event)"
+    (onPinTask)="reorderTasks()"
   >
   </app-task>
   <div *ngIf="tasksInOrder.length === 0 && !loading" class="wrapper-message">
@@ -34,20 +33,17 @@ export class TaskListComponent {
   /** Checks if it's in loading state */
   @Input() loading = false;
 
-  /** Event to change the task to pinned */
-  // tslint:disable-next-line: no-output-on-prefix
-  @Output()
-  onPinTask = new EventEmitter<Event>();
-
-  /** Event to change the task to archived */
-  // tslint:disable-next-line: no-output-on-prefix
-  @Output()
-  onArchiveTask = new EventEmitter<Event>();
-
   set tasks(arr: Task[]) {
     this.tasksInOrder = [
       ...arr.filter(t => t.state === 'TASK_PINNED'),
       ...arr.filter(t => t.state !== 'TASK_PINNED')
+    ];
+  }
+
+  reorderTasks(): void {
+    this.tasksInOrder = [
+      ...this.tasksInOrder.filter(t => t.state === 'TASK_PINNED'),
+      ...this.tasksInOrder.filter(t => t.state !== 'TASK_PINNED')
     ];
   }
 }
